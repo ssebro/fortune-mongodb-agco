@@ -126,8 +126,14 @@ adapter.find = function (model, query) {
   });
 };
 
-adapter.findMany = function (model, query, limit) {
+adapter.findMany = function (model, query, limit, skip, sort) {
   var _this = this;
+
+  if(_.isObject(query)){
+      query.id && (query._id = query.id) && delete query.id;
+  }
+  query && _.isArray(query.id) && (query.id = { $in:query.id });
+
   if (_.isArray(query)) {
     query = query.length ? {_id: {$in: query}} : {};
   } else if (!query) {
@@ -135,11 +141,14 @@ adapter.findMany = function (model, query, limit) {
   } else if (typeof query == 'number') {
     limit = query;
   }
+
   model = typeof model == 'string' ? this._models[model] : model;
   limit = limit || 1000;
+  skip = skip ? skip : 0;
+  sort = sort || {"_id":-1};
 
   return new Promise(function (resolve, reject) {
-    model.find(query).limit(limit).exec(function (error, resources) {
+    model.find(query).skip(skip).sort(sort).limit(limit).exec(function (error, resources) {
       if (error) {
         return reject(error);
       }
