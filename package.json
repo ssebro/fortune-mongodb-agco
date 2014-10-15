@@ -10,7 +10,7 @@
   "homepage": "http://fortunejs.com",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ssebro/fortune-mongodb"
+    "url": "https://github.com/ssebro/fortune-mongodb-agco"
   },
   "main": "./mongodb",
   "dependencies": {
