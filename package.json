@@ -1,7 +1,7 @@
 {
   "name": "fortune-mongodb-agco",
   "description": "MongoDB adapter for Fortune.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "author": {
     "name": "Dali Zheng",

@@ -126,7 +126,7 @@ adapter.find = function (model, query) {
   });
 };
 
-adapter.findMany = function (model, query, limit, skip, sort) {
+adapter.findMany = function (model, query, limit, skip, sort, fields) {
   var _this = this;
 
   if(_.isObject(query)){
@@ -146,9 +146,13 @@ adapter.findMany = function (model, query, limit, skip, sort) {
   limit = limit || 1000;
   skip = skip ? skip : 0;
   sort = sort || {"_id":-1};
-
+  var arr = fields?fields.split(" "):[];
+    _.each(arr,function(field,index){
+        arr[index]=field.replace("links.","");
+    })
+  fields && (fields = arr.join(" "))
   return new Promise(function (resolve, reject) {
-    model.find(query).skip(skip).sort(sort).limit(limit).exec(function (error, resources) {
+    model.find(query).skip(skip).sort(sort).limit(limit).select(fields).exec(function (error, resources) {
       if (error) {
         return reject(error);
       }
@@ -159,6 +163,7 @@ adapter.findMany = function (model, query, limit, skip, sort) {
     });
   });
 };
+
 
 adapter.awaitConnection = function () {
   var _this = this;
