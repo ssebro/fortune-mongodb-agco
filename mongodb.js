@@ -132,7 +132,7 @@ adapter.findMany = function (model, query, limit, skip, sort, fields) {
   if(_.isObject(query)){
       query.id && (query._id = query.id) && delete query.id;
   }
-  query && _.isArray(query.id) && (query.id = { $in:query.id });
+  query && query._id && _.isArray(query._id) && (query._id = { $in:query._id });
 
   if (_.isArray(query)) {
     query = query.length ? {_id: {$in: query}} : {};
